@@ -1,0 +1,276 @@
+﻿body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    padding-bottom: 200px;
+}
+
+.navbar {
+    z-index: 1040;
+    background-color: #ffffff;
+    border-bottom: 2px solid #b3e5fc;
+    padding-left: 30px;
+    padding-right: 30px;
+    position: fixed;
+}
+
+.navbar a.nav-link {
+    color: #0277bd;
+}
+
+.navbar a.nav-link:hover, .navbar a.nav-link.active {
+    color: #d32f2f;
+}
+
+.navbar-brand {
+    color: #007bff;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+:target {
+    scroll-margin-top: 70px;
+}
+
+.container {
+    padding: 20px;
+}
+
+section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: left;
+    margin-bottom: 20px;
+    color: #0056b3;
+    font-weight: 400;
+}
+
+h3 {
+    color: #0056b3;
+    font-weight: 400;
+}
+
+ol {
+    margin-left: 20px;
+}
+
+p {
+    text-align: justify;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+li {
+    text-align: justify;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#predictionResult {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: auto;
+}
+
+.plotContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.plotContainer .plotly {
+    width: 100%;
+}
+
+#dropZone {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    background-color: #fff;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+#alertBox {
+    color: red;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#uploadedImageContainer {
+    width: 100%;
+    display: none;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    width: auto;
+}
+
+.btn-secondary {
+    width: auto;
+}
+
+.btn-success {
+    width: auto;
+}
+
+.btn-danger {
+    width: auto;
+}
+
+.btn-warning {
+    width: auto;
+}
+
+.loss-container {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card .form-check {
+    text-align: center;
+}
+
+.canvas-container {
+    margin-bottom: 20px;
+}
+
+#modelSelectionSection {
+    margin-top: 30px;
+}
+
+.btn-custom {
+    background-color: #28a745 !important;
+    color: #ffffff !important;
+}
+
+.btn-custom:hover {
+    background-color: #218838 !important;
+}
+
+#spriteContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+#sprite {
+    width: 640px; /* Breite eines Frames */
+    height: 360px; /* Höhe eines Frames */
+    background-image: url('sprite.png'); /* Pfad zum Sprite-Sheet */
+    background-position: 0 0;
+    background-size: 300% 1100%; /* 3 Spalten und 11 Reihen */
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-start {
+    align-items: flex-start;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+
+
+
+
+
+@media (min-width: 768px) {
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .imageContainer, .plotContainer {
+        width: 50%;
+    }
+
+    #classifyButton {
+        display: block;
+    }
+}

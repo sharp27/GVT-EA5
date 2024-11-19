@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EA 5 - Kamerabewegung</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gl-matrix@2.8.1/dist/gl-matrix-min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EA 5 - Kamerabewegung</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#teil1">Teil 1</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#teil2">Teil 2</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#documentationSection">Dokumentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5" id="mainContent">
+        <section id="teil1" class="mb-4">
+            <div class="row">
+                <!-- Left Column for Canvas -->
+                <div class="col-md-6">
+                    <h2>Teil 1</h2>
+                    <canvas id="webglCanvas" width="800" height="600"></canvas>
+                </div>
+                <!-- Right Column for Controls -->
+<div class="col-md-6 d-flex flex-column align-items-start justify-content-center">
+    <h3>Steuerung</h3>
+    <div class="form-group mb-3">
+    <br>
+        <label for="cameraAngleSlider">Kamerawinkel <br>(Tasten: Pfeil links und rechts):</label>
+        <input type="range" id="cameraAngleSlider" min="0" max="360" value="45">
+    </div>
+    <div class="form-group mb-3">
+        <label for="cameraRadiusSlider">Kameraradius <br> (Tasten: n und shift-n):</label>
+        <input type="range" id="cameraRadiusSlider" min="50" max="500" value="400">
+    </div>
+    <div class="mb-3 d-flex align-items-center">
+        <input type="checkbox" id="displayModeTorusCheckbox">
+        <label for="displayModeTorusCheckbox" class="ms-2">Torus Wireframe (Taste: t)</label>
+    </div>
+    <div class="mb-3 d-flex align-items-center">
+        <input type="checkbox" id="displayModeKnotCheckbox">
+        <label for="displayModeKnotCheckbox" class="ms-2">Knoten Wireframe (Taste: k)</label>
+    </div>
+</div>
+            </div>
+        </section>
+
+        <section id="teil2" class="mb-4">
+            <div class="row">
+                <!-- Left Column for Canvas -->
+                <div class="col-md-6">
+                    <h2>Teil 2</h2>
+                    <canvas id="webglCanvas2" width="800" height="600"></canvas>
+                </div>
+                <!-- Right Column for Controls -->
+<div class="col-md-6 d-flex flex-column align-items-start justify-content-center">
+    <h3>Steuerung</h3>
+    <div class="form-group mb-3">
+    <br>
+        <label for="recursionDepthSlider">Rekursionstiefe: <br> (Tasten: + und -)</label>
+        <input type="range" id="recursionDepthSlider" min="0" max="5" value="0">
+    </div>
+    <div class="form-group mb-3">
+        <label for="cameraAngle2Slider">Kamerawinkel: <br> (Tasten: a und d)</label>
+        <input type="range" id="cameraAngle2Slider" min="0" max="360" value="0">
+    </div>
+    <div class="form-group mb-3">
+        <label for="cameraRadius2Slider">Kameraradius: <br> (Tasten: w und d)</label>
+        <input type="range" id="cameraRadius2Slider" min="2" max="10" step="0.1" value="4">
+    </div>
+    <div class="mb-3 d-flex align-items-center">
+        <input type="checkbox" id="displayModeSphereCheckbox">
+        <label for="displayModeSphereCheckbox" class="ms-2">Wireframe Modus (Taste: g)</label>
+    </div>
+</div>
+
+            </div>
+        </section>
+
+        <section id="documentationSection" class="mb-4">
+    <h2>Dokumentation</h2>
+
+    <h3>Kamera</h3>
+    <p>
+        Die Kamera wird mithilfe der View-Matrix (<code>viewMatrix</code>) und der Projektionsmatrix (<code>projectionMatrix</code>) definiert:
+    </p>
+    <ul>
+        <li><strong>View-Matrix (<code>mat4.lookAt</code>):</strong> Definiert die Position und Ausrichtung der Kamera in der Szene.</li>
+        <li><strong>Projektionsmatrix (<code>mat4.perspective</code>):</strong> Definiert, wie die 3D-Szene auf den 2D-Bildschirm projiziert wird.</li>
+    </ul>
+
+    <h4>Kamera-Parameter</h4>
+    
+    <ul>
+        <li><strong><code>cameraAngle</code>:</strong> Winkel der Kamera um die Y-Achse (Rotation um die Szene).</li>
+        <li><strong><code>cameraRadius</code>:</strong> Abstand der Kamera vom Ursprung der Szene.</li>
+        <li><strong><code>cameraHeight</code>:</strong> Vertikale Position der Kamera (in diesem Fall konstant bei 0).</li>
+    </ul>
+
+    
+
+    <h4>Berechnung der Kameraposition</h4>
+    <p>
+        Die Position der Kamera wird mithilfe der folgenden Gleichungen berechnet:
+    </p>
+    <pre><code class="language-javascript">
+const eye = [
+    Math.cos(cameraAngle) * cameraRadius,
+    cameraHeight,
+    Math.sin(cameraAngle) * cameraRadius,
+];
+    </code></pre>
+    <ul>
+        <li><strong><code>Math.cos(cameraAngle) * cameraRadius</code>:</strong> X-Koordinate der Kamera.</li>
+        <li><strong><code>cameraHeight</code>:</strong> Y-Koordinate der Kamera.</li>
+        <li><strong><code>Math.sin(cameraAngle) * cameraRadius</code>:</strong> Z-Koordinate der Kamera.</li>
+    </ul>
+    <p>
+        Dies ermöglicht eine kreisförmige Bewegung der Kamera um den Ursprung der Szene, was eine 360-Grad-Ansicht der Objekte ermöglicht.
+    </p>
+
+    <h4>View-Matrix</h4>
+    <p>
+        Die View-Matrix wird mit der Funktion <code>mat4.lookAt</code> erstellt:
+    </p>
+    <pre><code class="language-javascript">
+mat4.lookAt(viewMatrix, eye, [0, 0, 0], [0, 1, 0]);
+    </code></pre>
+    <ul>
+        <li><strong><code>eye</code>:</strong> Position der Kamera (berechnet wie oben).</li>
+        <li><strong><code>[0, 0, 0]</code>:</strong> Zielpunkt, auf den die Kamera schaut (in diesem Fall der Ursprung).</li>
+        <li><strong><code>[0, 1, 0]</code>:</strong> Up-Vektor der Kamera (definiert die "Oben"-Richtung).</li>
+    </ul>
+
+    <h4>Projektionsmatrix</h4>
+    <p>
+        Die Projektionsmatrix wird mit der Funktion <code>mat4.perspective</code> erstellt:
+    </p>
+    <pre><code class="language-javascript">
+mat4.perspective(projectionMatrix, Math.PI / 4, canvas.width / canvas.height, 0.1, 1000);
+    </code></pre>
+    <ul>
+        <li><strong><code>Math.PI / 4</code>:</strong> Öffnungswinkel des Sichtfelds (in diesem Fall 45 Grad).</li>
+        <li><strong><code>canvas.width / canvas.height</code>:</strong> Seitenverhältnis des Canvas.</li>
+        <li><strong><code>0.1, 1000</code>:</strong> Nah- und Fern-Clipping-Ebenen.</li>
+    </ul>
+    <br><br>
+    <h3>Rekursives Kugel-Modell</h3>
+    <p>
+        Die Kugel wird durch rekursive Unterteilung der Flächen eines Oktaeders erzeugt. Ausgangspunkt ist ein Oktaeder mit acht Dreiecken. Diese Dreiecke werden in kleinere Dreiecke unterteilt, wobei die neuen Punkte auf die Oberfläche der Einheitssphäre projiziert werden. Durch wiederholte Anwendung dieses Prozesses entsteht eine immer feinere Approximation einer Kugel.
+    </p>
+
+    <h4>Initiale Punkte und Dreiecke</h4>
+    <p>
+        Die initialen Eckpunkte des Oktaeders sind:
+    </p>
+    <pre><code class="language-javascript">
+const v0 = [1, 0, 0];
+const v1 = [-1, 0, 0];
+const v2 = [0, 1, 0];
+const v3 = [0, -1, 0];
+const v4 = [0, 0, 1];
+const v5 = [0, 0, -1];
+    </code></pre>
+    <p>
+        Die initialen Dreiecke werden aus diesen Punkten gebildet:
+    </p>
+    <pre><code class="language-javascript">
+let initialTriangles = [
+    [v0, v2, v4],
+    [v2, v1, v4],
+    [v1, v3, v4],
+    [v3, v0, v4],
+    [v2, v0, v5],
+    [v1, v2, v5],
+    [v3, v1, v5],
+    [v0, v3, v5]
+];
+    </code></pre>
+    <br>
+    <h4>Rekursive Unterteilung</h4>
+    <p>
+        Jeder dieser initialen Dreiecke wird rekursiv unterteilt durch die Funktion <code>subdivideTriangle(a, b, c, depth)</code>:
+    </p>
+    <pre><code class="language-javascript">
+function subdivideTriangle(a, b, c, depth) {
+    if (depth === 0) {
+        addTriangle(a, b, c);
+    } else {
+        let ab = normalize(midpoint(a, b));
+        let ac = normalize(midpoint(a, c));
+        let bc = normalize(midpoint(b, c));
+
+        subdivideTriangle(a, ab, ac, depth - 1);
+        subdivideTriangle(ab, b, bc, depth - 1);
+        subdivideTriangle(bc, c, ac, depth - 1);
+        subdivideTriangle(ab, bc, ac, depth - 1);
+    }
+}
+    </code></pre>
+    <p>
+        Dabei wird für jede Seite des Dreiecks der Mittelpunkt berechnet und auf die Einheitssphäre normalisiert:
+    </p>
+    <pre><code class="language-javascript">
+function midpoint(u, v) {
+    return [
+        (u[0] + v[0]) / 2,
+        (u[1] + v[1]) / 2,
+        (u[2] + v[2]) / 2
+    ];
+}
+
+function normalize(v) {
+    const len = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+    return [v[0]/len, v[1]/len, v[2]/len];
+}
+    </code></pre>
+
+
+
+</section>
+
+
+    </div>
+
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
